@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account | CodeAlpha Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: 'Inter', -apple-system, sans-serif; }
+  </style>
+  <!-- No localStorage! Script is at the bottom -->
+</head>
+<body class="bg-gray-100">
+  <!-- Header (for consistency) -->
+  <header class="bg-gray-900 shadow">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-store text-blue-400 text-2xl"></i>
+        <span class="text-white text-2xl font-bold tracking-wide">CodeAlpha Store</span>
+      </div>
+      <nav class="space-x-4">
+        <a href="home.html" class="text-white hover:text-blue-300 font-medium">Home</a>
+        <a href="products.html" class="text-white hover:text-blue-300 font-medium">Products</a>
+        <a href="cart.html" class="text-white hover:text-blue-300 font-medium">Cart</a>
+        <a href="#" onclick="logout()" class="bg-blue-600 text-white rounded px-4 py-2 font-semibold shadow hover:bg-blue-800 transition">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content: User Profile -->
+  <main class="max-w-xl mx-auto py-12 px-4">
+    <div class="bg-white rounded-2xl shadow-lg p-10 text-center">
+      <i class="fas fa-user-circle text-5xl mb-6 text-blue-600"></i>
+      <h1 class="text-2xl font-bold text-gray-800 mb-2" id="displayUsername">Loading...</h1>
+      <div id="userDetails" class="space-y-3 text-left py-4"></div>
+      <a href="home.html" class="mt-6 inline-block w-full text-center px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow">Back to Home</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-500 text-sm bg-white shadow-inner">
+    &copy; 2025 CodeAlpha Internship | Made with <span class="text-red-500">&hearts;</span> by Harshdeep
+  </footer>
+
+  <!-- Secure, session-based JS: -->
+  <script>
+    async function loadAccountInfo() {
+      const displayUsername = document.getElementById('displayUsername');
+      const userDetails = document.getElementById('userDetails');
+
+      // Fetch from server-side session (never localStorage)
+      let user;
+      try {
+        const res = await fetch('/api/me');
+        if (res.status === 401) {
+          displayUsername.textContent = 'Not logged in';
+          userDetails.innerHTML = '<div class="text-red-500">You are not logged in.</div>';
+          setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+          return;
+        }
+        user = await res.json();
+      } catch (e) {
+        userDetails.innerHTML = '<div class="text-red-500">Error loading your account. Try again.</div>';
+        return;
+      }
+
+      // Render user's real info only for logged-in user
+      displayUsername.textContent = user.username || '(Unknown)';
+      let createdAt = user.created_at ? (new Date(user.created_at)).toLocaleDateString() : 'Unknown';
+      userDetails.innerHTML = `
+        <div class="flex items-center gap-3 py-2 border-b">
+          <i class="fas fa-at text-blue-600"></i>
+          <span class="text-gray-600">${user.email ? user.email : ''}</span>
+        </div>
+        <div class="flex items-center gap-3 py-2 border-b">
+          <i class="far fa-calendar-check text-blue-600"></i>
+          <span class="text-gray-600">Member since: <span class="font-medium">${createdAt}</span></span>
+        </div>
+        <div class="flex items-center gap-3 py-2">
+          <i class="fas fa-id-card text-blue-600"></i>
+          <span class="text-gray-600">User ID: <span class="font-mono font-medium">${user.id}</span></span>
+        </div>
+      `;
+    }
+
+    // Logout securely (kills session server-side)
+    function logout() {
+      fetch('/logout').then(() => window.location.href = 'login.html');
+    }
+
+    // Run when page loads
+    loadAccountInfo();
+  </script>
+</body>
+</html>

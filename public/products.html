@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Products | CodeAlpha Store</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; margin: 0; }
+    header { background: #111827; color: #fff; padding: 1.3rem 2.2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 3px 16px 0 rgba(30, 41, 59, 0.1);}
+    nav a { color: #fff; text-decoration: none; margin: 0 1.2rem;
+      font-weight: 500; font-size: 1.07rem; transition: color .14s; }
+    nav a:hover { color: #38bdf8; }
+    .shop-section { margin-top: 2.3rem; margin-bottom: 2.3rem; }
+    .section-title { font-size: 2.1rem; font-weight: 700; color: #1e293b;
+      margin-bottom: .7em; padding-left: 3rem; letter-spacing: 0.02em; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.6rem; padding: 0 3rem;}
+    .product-card { background: #fff; border-radius: 15px; box-shadow: 0 2px 25px 0 rgba(36, 99, 235, 0.09);
+      display: flex; flex-direction: column; align-items: center; padding: 1.7rem 1.1rem 1.5rem;
+      transition: box-shadow .17s cubic-bezier(.4,0,.2,1), transform .17s;
+      position: relative; overflow: hidden; border: 1.5px solid #e0e7ef;}
+    .product-card:hover { box-shadow: 0px 10px 28px 0 rgba(37, 99, 235, 0.18);
+      transform: translateY(-3px) scale(1.03); border-color: #38bdf8;}
+    .device-photo { width: 120px; height: 120px; object-fit: contain; border-radius: 10px;
+      background: #f9fafb; margin-bottom: 1.3rem; box-shadow: 0 0 12px 0 rgba(30,41,59,0.04);
+      border: 1px solid #e6eaf0; transition: filter .13s;}
+    .product-card h3 { font-size: 1.12rem; font-weight: 600; margin-bottom: .32rem; color: #185fa6; text-align: center;}
+    .product-card p { font-size: 0.96rem; color: #535a69; margin-bottom: 1.22rem; text-align: center; min-height: 34px;}
+    .buttons { display: flex; justify-content: center; gap: 8px; width: 100%; margin-top: 0.5rem;}
+    .buttons button { flex: 1; padding: 0.6rem 0; background: #2563eb; color: #fff; border: none; border-radius: 7px;
+      font-weight: bold; cursor: pointer; font-size: 1rem;
+      box-shadow: 0 0 5px 1px #e0eaff36; transition: background 0.16s;}
+    .buttons .btn-order { background: #10b981;}
+    .buttons button:hover { background: #185fa6; opacity: 0.97;}
+    .buttons .btn-order:hover { background: #059669;}
+    footer { text-align: center; padding: 1.13rem; background-color: #111827; color: #fff; margin-top: 2.5rem;
+      font-size: 0.97rem; letter-spacing: 0.04em;}
+    .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; border-radius: 6px;
+      padding: 14px; position: fixed; z-index: 999; left: 50%; bottom: 30px;
+      font-size: 16px; opacity: 0; transform: translateX(-50%) translateY(20px);
+      transition: opacity 0.4s, transform 0.4s;}
+    .toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0);}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1 style="font-size:2.2rem; letter-spacing:0.05em;">CodeAlpha Store</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="cart.html">Cart</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+  </nav>
+</header>
+
+<main>
+  <!-- Phones Section -->
+  <div class="shop-section">
+    <div class="section-title">Phones</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <img class="device-photo" src="images/iphone.jpg" alt="iPhone 14" />
+        <h3>iPhone 14</h3>
+        <p>Powerful smartphone with A15 chip and advanced camera.</p>
+        <div class="buttons">
+          <button onclick="addToCart('iPhone 14')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('iPhone 14')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/oneplus.png" alt="OnePlus 12" />
+        <h3>OnePlus 12</h3>
+        <p>Flagship Android phone with smooth OxygenOS experience.</p>
+        <div class="buttons">
+          <button onclick="addToCart('OnePlus 12')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('OnePlus 12')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/samsung.avif" alt="Samsung Galaxy S24" />
+        <h3>Samsung Galaxy S24</h3>
+        <p>Premium Android phone with stunning AMOLED display.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Samsung Galaxy S24')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Samsung Galaxy S24')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/googlepixel.jpg" alt="Google Pixel 8" />
+        <h3>Google Pixel 8</h3>
+        <p>Clean Android with Google’s best camera technology.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Google Pixel 8')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Google Pixel 8')">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Headphones & Wearables Section -->
+  <div class="shop-section">
+    <div class="section-title">Headphones &amp; Wearables</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <img class="device-photo" src="images/boats441.webp" alt="Boat Airdopes 441" />
+        <h3>Boat Airdopes 441</h3>
+        <p>Wireless earbuds with thumping bass and long battery.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Boat Airdopes 441')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Boat Airdopes 441')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/sonywh.jpg" alt="Sony WH-1000XM5" />
+        <h3>Sony WH-1000XM5</h3>
+        <p>Industry-leading noise cancellation headphones.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Sony WH-1000XM5')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Sony WH-1000XM5')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/noisewatch.jpg" alt="Noise Smartwatch" />
+        <h3>Noise Smartwatch</h3>
+        <p>Stylish, durable smartwatch with fitness tracking.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Noise Smartwatch')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Noise Smartwatch')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/applewatch.jpg" alt="Apple Watch SE" />
+        <h3>Apple Watch SE</h3>
+        <p>Essential fitness tracking and notifications from Apple.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Apple Watch SE')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Apple Watch SE')">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Laptops Section -->
+  <div class="shop-section">
+    <div class="section-title">Laptops</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <img class="device-photo" src="images/dellxp.jpg" alt="Dell XPS 13" />
+        <h3>Dell XPS 13</h3>
+        <p>Ultra-portable laptop with vibrant InfinityEdge display.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Dell XPS 13')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Dell XPS 13')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/mackbook.webp" alt="MacBook Air M2" />
+        <h3>MacBook Air M2</h3>
+        <p>Apple’s lightest performance laptop with colourful screen.</p>
+        <div class="buttons">
+          <button onclick="addToCart('MacBook Air M2')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('MacBook Air M2')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/hpspect.jpg" alt="HP Spectre x360" />
+        <h3>HP Spectre x360</h3>
+        <p>Convertible laptop with touchscreen and fast SSD.</p>
+        <div class="buttons">
+          <button onclick="addToCart('HP Spectre x360')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('HP Spectre x360')">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cameras Section -->
+  <div class="shop-section">
+    <div class="section-title">Cameras</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <img class="device-photo" src="images/canonr7.jpg" alt="Canon EOS R7" />
+        <h3>Canon EOS R7</h3>
+        <p>Mirrorless camera with fast autofocus and 4K video.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Canon EOS R7')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Canon EOS R7')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/sonyalpha.jpg" alt="Sony Alpha A7 IV" />
+        <h3>Sony Alpha A7 IV</h3>
+        <p>Full-frame mirrorless camera, perfect for creators.</p>
+        <div class="buttons">
+          <button onclick="addToCart('Sony Alpha A7 IV')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('Sony Alpha A7 IV')">Place Order</button>
+        </div>
+      </div>
+      <div class="product-card">
+        <img class="device-photo" src="images/gopro.jpg" alt="GoPro Hero 12" />
+        <h3>GoPro Hero 12</h3>
+        <p>Waterproof 5K action camera—capturing every adventure.</p>
+        <div class="buttons">
+          <button onclick="addToCart('GoPro Hero 12')">Add to Cart</button>
+          <button class="btn-order" onclick="placeOrder('GoPro Hero 12')">Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 CodeAlpha Internship Store. All rights reserved.</p>
+</footer>
+
+<div id="toast" class="toast">Message</div>
+
+<script>
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.className = "toast show";
+    setTimeout(() => {
+      toast.className = "toast";
+    }, 3000);
+  }
+
+  function addToCart(productName) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(productName);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    showToast(`${productName} added to cart!`);
+  }
+
+  function placeOrder(productName) {
+    showToast(`Order placed for: ${productName}`);
+  }
+</script>
+</body>
+</html>

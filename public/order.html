@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Orders | CodeAlpha Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-gray-900 shadow">
+    <div class="max-w-7xl mx-auto px-4 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-store text-blue-400 text-2xl"></i>
+        <span class="text-white text-2xl font-bold tracking-wide">CodeAlpha Store</span>
+      </div>
+      <nav class="flex gap-4">
+        <a href="home.html" class="text-white hover:text-blue-300 font-medium">Home</a>
+        <a href="products.html" class="text-white hover:text-blue-300 font-medium">Products</a>
+        <a href="cart.html" class="text-white hover:text-blue-300 font-medium">Cart</a>
+        <a href="account.html" class="bg-blue-600 text-white rounded px-4 py-2 font-semibold shadow hover:bg-blue-800 transition">Account</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <div class="max-w-7xl mx-auto px-4 pt-8 pb-4">
+    <h1 class="text-3xl font-bold text-gray-800">Your Orders</h1>
+  </div>
+
+  <!-- Orders List -->
+  <main class="max-w-7xl mx-auto flex-1 px-4 py-4">
+    <div id="ordersContainer" class="space-y-5">
+      <div class="p-8 text-center text-lg text-gray-500">Loading your orders...</div>
+    </div>
+  </main>
+
+  <footer class="mt-auto bg-gray-900 text-white py-6 text-center text-sm">
+    <p>&copy; 2025 CodeAlpha Internship</p>
+  </footer>
+
+  <!-- Order Card Template (hidden, for clone) -->
+  <template id="orderTemplate">
+    <div class="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+      <div class="flex justify-between items-start pb-3 border-b border-gray-200">
+        <span class="font-semibold text-blue-800">Order ID: #<span data-order-id></span></span>
+        <span class="px-3 py-1 rounded-full text-xs font-medium" data-order-status></span>
+      </div>
+      <div class="py-4 grid sm:grid-cols-3 gap-4">
+        <div>
+          <p class="text-gray-500 text-sm">Date</p>
+          <p class="font-medium" data-order-date></p>
+        </div>
+        <div>
+          <p class="text-gray-500 text-sm">Total</p>
+          <p class="font-medium" data-order-total></p>
+        </div>
+        <div>
+          <p class="text-gray-500 text-sm">Items</p>
+          <p class="font-medium" data-order-items></p>
+        </div>
+      </div>
+      <div class="border-t border-gray-100 pt-4">
+        <a href="#" data-order-details class="text-blue-600 font-medium flex items-center gap-2 hover:underline">View details <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    // Session-based authentication: check current login via /api/me
+    async function loadOrders() {
+      // 1. Check if logged in 
+      const meRes = await fetch('/api/me');
+      if (meRes.status === 401) {
+        window.location.href = 'login.html';
+        return;
+      }
+      // Optional: get user info
+      // const user = await meRes.json();
+
+      // 2. Fetch user's orders from your backend API (session based)
+      let orders = [];
+      try {
+        const res = await fetch('/api/orders'); // session authenticated!
+        if (!res.ok) throw new Error();
+        orders = await res.json();
+      } catch (e) {
+        document.getElementById('ordersContainer').innerHTML =
+          `<div class="p-8 bg-white shadow rounded-lg text-center text-red-500">Failed to load your orders.</div>`;
+        return;
+      }
+
+      // 3. Render orders
+      const container = document.getElementById('ordersContainer');
+      const template = document.getElementById('orderTemplate');
+      container.innerHTML = '';
+
+      if (!orders.length) {
+        container.innerHTML = `<div class="p-8 bg-white shadow rounded-lg text-center text-gray-500">You have no orders yet.</div>`;
+        return;
+      }
+
+      // You may need to adjust this rendering for your actual fields!
+      orders.forEach(order => {
+        const clone = template.content.cloneNode(true);
+        clone.querySelector('[data-order-id]').textContent = order.id || order.order_id || 'N/A';
+        clone.querySelector('[data-order-date]').textContent = order.date || order.created_at || '';
+        clone.querySelector('[data-order-total]').textContent = order.total || order.total_price || '';
+        clone.querySelector('[data-order-items]').textContent = order.items || order.total_items || '';
+        const statusElem = clone.querySelector('[data-order-status]');
+        const status = (order.status || 'Pending').toString();
+        // Basic status coloring:
+        let statusClass = 'bg-gray-200 text-gray-700';
+        if (/deliver/i.test(status)) statusClass = 'bg-green-100 text-green-800';
+        else if (/ship/i.test(status)) statusClass = 'bg-yellow-100 text-yellow-800';
+        else if (/cancel/i.test(status)) statusClass = 'bg-red-100 text-red-800';
+        statusElem.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        statusElem.className = `px-3 py-1 rounded-full text-xs font-medium ${statusClass}`;
+        clone.querySelector('[data-order-details]').href = '#'; // Update for order details page if needed
+        container.appendChild(clone);
+      });
+    }
+
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', loadOrders);
+  </script>
+</body>
+</html>

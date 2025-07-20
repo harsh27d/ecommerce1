@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - CodeAlpha Store</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    :root {
+      --blue-400: #60a5fa;
+      --blue-500: #3b82f6;
+      --blue-600: #2563eb;
+      --blue-700: #1d4ed8;
+      --blue-50: #eff6ff;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-700: #374151;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--blue-50);
+      color: var(--gray-700);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: var(--blue-500);
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+    .form-container {
+      background: white;
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    .form-container h2 {
+      margin: 0 0 1.75rem;
+      font-size: 1.5rem;
+      color: var(--blue-600);
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--gray-700);
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--blue-400);
+    }
+    button {
+      width: 100%;
+      padding: 0.875rem;
+      background-color: var(--blue-600);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: var(--blue-700);
+    }
+    .register-link {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9375rem;
+    }
+    .register-link a {
+      color: var(--blue-600);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      background-color: var(--blue-500);
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CodeAlpha Store</h1>
+  </header>
+  <main>
+    <div class="form-container">
+      <h2>Login</h2>
+      <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+        <button type="submit">Login</button>
+      </form>
+      <div class="register-link">
+        Don't have an account? <a href="register.html">Register</a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; <span id="year"></span> CodeAlpha Internship</p>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
